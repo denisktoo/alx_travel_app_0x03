@@ -20,3 +20,24 @@ def send_payment_confirmation_email(user_email, booking_id, amount):
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user_email])
 
     return f"Payment confirmation email sent to {user_email}"
+
+@shared_task
+def send_booking_confirmation_email(user_email, booking_id, total_price):
+    """
+    Send booking confirmation email asynchronously.
+    """
+    subject = "Booking Confirmation"
+    message = f"""
+    Dear Customer,
+
+    Your booking has been successfully created.
+
+    Booking ID: {booking_id}
+    Total Price: {total_price} KES
+
+    Thank you for choosing our service!
+    """
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user_email])
+    
+    return f"Booking confirmation email sent to {user_email}"

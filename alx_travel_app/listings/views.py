@@ -11,7 +11,7 @@ import os
 import requests
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .tasks import send_payment_confirmation_email
+from .tasks import send_payment_confirmation_email, send_booking_confirmation_email
 import uuid
 
 CHAPA_SECRET_KEY = os.getenv('CHAPA_SECRET_KEY')
@@ -43,6 +43,13 @@ class BookingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         listing = get_object_or_404(Listing, pk=self.kwargs.get('listing_pk'))
         booking = serializer.save(user=self.request.user, property=listing)
+
+        # Send booking confirmation email asynchronously
+        send_booking_confirmation_email.delay(
+            booking.user.email,
+            booking.booking_id,
+            booking.total_price
+        )
 
         # Automatically initiate payment after booking
         payment = Payment.objects.create(

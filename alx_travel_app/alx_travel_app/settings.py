@@ -69,6 +69,14 @@ INSTALLED_APPS = [
     'listings',
 ]
 
+# Celery Configuration
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'  # RabbitMQ default
+CELERY_RESULT_BACKEND = 'rpc://'  # Using RPC backend with RabbitMQ
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
