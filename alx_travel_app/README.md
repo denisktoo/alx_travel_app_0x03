@@ -164,3 +164,26 @@ Response (example if successful):
   "booking": 2
 }
 ```
+
+---
+
+## ✉️ Booking Email Confirmation (Celery)
+
+* **Task:** Send booking confirmation emails asynchronously after a booking is created.
+
+* **How to run worker:**
+
+```bash
+celery -A alx_travel_app worker --loglevel=info --pool=threads
+```
+
+* **How to check:** Monitor Celery worker logs for a line like:
+
+```
+[2025-08-27 13:18:36,290: INFO/MainProcess] Task listings.tasks.send_booking_confirmation_email[4e00a7b6-202a-4a50-9550-5c52f4cbe258] succeeded in 4.172s: 'Booking confirmation email sent to deniskiprotich749@gmail.com'
+```
+
+* **Sample input:** Booking ID (`booking_id=1`)
+* **Sample output/result:** `'Booking confirmation email sent to deniskiprotich749@gmail.com'`
+
+---
